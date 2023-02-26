@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY API</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(to right, #000428, #000046);
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            gap: 24px;
+        }
+
+        .headerContainer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .headerContainer a,
+        .updateBtn,
+        .addKey {
+            color: white;
+            text-decoration: none;
+            background: hsla(200, 80%, 50%, 0.4);
+            border-radius: 4px;
+            padding: 8px 16px;
+            gap: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 0.8rem;
+            border: none;
+        }
+
+        .updateBtn,
+        .addKey {
+            width: fit-content;
+            margin-top: 12px;
+            cursor: pointer;
+        }
+
+        .headerContainer a:hover,
+        .updateBtn:hover,
+        .addKey:hover {
+            background: hsla(220, 80%, 50%, 0.8);
+        }
+
+        .first {
+            display: flex;
+        }
+
+        .subHeader {
+            font-size: 1.3rem;
+        }
+
+        .info {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .info h3,
+        .info p {
+            font-size: 0.9rem;
+        }
+
+        .info h3 {
+            color: cyan;
+            font-weight: 500;
+        }
+
+        .info p {
+            font-weight: 300;
+        }
+
+        .info i {
+            cursor: pointer;
+        }
+
+        .info i:hover {
+            opacity: 0.7;
+
+        }
+
+        .info .trashCan:hover {
+            color: coral;
+            opacity: unset;
+        }
+
+        .errMsg {
+            color: coral;
+            display: none;
+
+        }
+
+        .authenticatedMsg {
+            color: lime;
+            display: none;
+        }
+
+        .codeCheck {
+            padding: 0 8px;
+        }
+
+        .keyInput {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            width: 100%;
+            margin-top: 8px;
+            border: 1px solid navy;
+        }
+
+        .keyInput:focus-within {
+            border-color: blue;
+        }
+
+        .keyInput input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 12px;
+            color: white;
+        }
+
+        section {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .planContainer {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .subscription {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: hsla(200, 80%, 50%, 0.2);
+            padding: 12px;
+            border-radius: 4px;
+        }
+
+        .subscriptionHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .subscriptionHeader div {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .subscriptionHeader h3 {
+            font-size: 1rem;
+        }
+
+        .activePlan,
+        .activePlan2 {
+            border-radius: 20px;
+            background: lime;
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .activePlan2 {
+            background: cyan;
+            ;
+        }
+
+        .activePlan p,
+        .activePlan2 p,
+        .activePlan i,
+        .activePlan2 i {
+            font-size: 0.8rem;
+        }
+
+        .activePlan p,
+        .activePlan i {
+            text-shadow: 0 0 10px darkgreen;
+        }
+
+        .activePlan2 p,
+        .activePlan2 i {
+            text-shadow: 0 0 10px navy;
+        }
+
+        .currPlan {
+            color: lime;
+        }
+
+        .currPlan2 {
+            color: cyan;
+        }
+
+        .subscriptionDetails {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .detailBlock {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .detailBlock h4 {
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .detailBlock p {
+            font-size: 0.8rem;
+        }
+
+        .detailBlock i {
+            color: #32dc32;
+            background: #0f172a;
+            padding: 2px 4px;
+        }
+
+        .billingBlock {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+        }
+
+        form button {
+            all: unset;
+        }
+
+        .statusUpdate {
+            margin-top: 4px;
+        }
+
+        #cancel_btn {
+            display: none;
+        }
+
+        #cancel_btn {
+            background: coral;
+        }
+
+        #cancel_btn:hover {
+            background: lightsalmon;
+        }
+
+        @media (min-width: 700px) {
+            .container {
+                gap: 32px;
+            }
+
+            .headerContainer a {
+                font-size: 1rem;
+            }
+
+            .subHeader {
+                font-size: 1.8rem;
+            }
+
+            .info {
+                gap: 16px;
+            }
+
+            .info h3,
+            .info p {
+                font-size: 1rem;
+            }
+
+            .subscription {
+                padding: 24px;
+
+            }
+
+            .subscriptionHeader h3 {
+                font-size: 1.2rem;
+            }
+
+            .detailBlock h4 {
+                font-size: 1rem;
+            }
+
+            .detailBlock p {
+                font-size: 0.9rem;
+            }
+
+            .codeCheck {
+                padding: 0 10px;
+            }
+
+            .planContainer {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="headerContainer">
+            <h1>My Cool API</h1>
+            <a class="first" href="https://github.com/jamezmca" target="_blank">
+                <i class="fa-solid fa-book"></i>
+                Docs
+            </a>
+        </div>
+
+        <section>
+            <h2 class="subHeader">Description</h2>
+            <div class="info">
+                <h3>Purpose</h3>
+                <p>To encourage everyone to become a great developer!</p>
+            </div>
+            <div class="info">
+                <h3>Author</h3>
+                <p>Smoljames</p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="subHeader">Check Key Status</h2>
+            <p class="preMsg">Please enter your API Key below to check it's status</p>
+            <p class="errMsg">Please ensure your API Key is formatted correctly</p>
+            <p class="authenticatedMsg">API Key Authenticated</p>
+            <div class="info">
+                <h3>Example API Key</h3>
+                <p>asdkjfh(*(&*FHDSF&*(&^(&A)S!123</p>
+            </div>
+            <div class="keyInput">
+                <input id="userKey" type="text" placeholder="API Key" />
+                <!-- <i class="fa-regular fa-circle codeCheck"></i>
+                <i class="fa-solid fa-circle codeCheck"></i> -->
+            </div>
+            <div id="check_status_btn" class="addKey">
+                <i class="fa-solid fa-check"></i> Check Status
+            </div>
+            <p class="statusUpdate">
+
+            </p>
+            <div id="cancel_btn" class="addKey">
+                <i class="fa-solid fa-ban"></i>
+                Cancel Subscription
+            </div>
+        </section>
+
+        <section>
+            <h2 class="subHeader">Billing Plans</h2>
+            <div class="planContainer">
+                <form action="create-checkout-session/pre" method="POST" class="subscription">
+                    <div class="subscriptionHeader">
+                        <div>
+                            <h3 class="currPlan">PrePaid</h3>
+                            <h3>Plan</h3>
+                        </div>
+                        <div class="activePlan">
+                            <i class="fa-regular fa-circle-check"></i>
+                            <p>Active</p>
+                        </div>
+                    </div>
+                    <div class="subscriptionDetails">
+                        <div class="detailBlock">
+                            <h4>Plan Details</h4>
+                            <p>
+                                <i class="fa-solid fa-check"></i>
+                                100 Fast Prepaid API Calls
+                            </p>
+                            <p>
+                                <i class="fa-solid fa-check"></i>
+                                Motivation When You Need It
+                            </p>
+                            <p>
+                                <i class="fa-solid fa-check"></i>
+                                Pay In Advance
+                            </p>
+                        </div>
+                        <div class="detailBlock">
+                            <h4>Billing & Payment</h4>
+                            <div class="billingBlock">
+                                <p>Price</p>
+                                <p>$14.50</p>
+                            </div>
+                            <div class="billingBlock">
+                                <p>Billing Period</p>
+                                <p>N/A</p>
+                            </div>
+                            <div class="billingBlock">
+                                <p>Renewal Date</p>
+                                <p>N/A</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="updateBtn">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Checkout
+                    </button>
+                </form>
+                <form action="create-checkout-session/sub" method="POST" class="subscription">
+                    <div class="subscriptionHeader">
+                        <div>
+                            <h3 class="currPlan2">Subscription</h3>
+                            <h3>Plan</h3>
+                        </div>
+                        <div class="activePlan2">
+                            <i class="fa-regular fa-circle-check"></i>
+                            <p>Active</p>
+                        </div>
+                    </div>
+                    <div class="subscriptionDetails">
+                        <div class="detailBlock">
+                            <h4>Plan Details</h4>
+                            <p>
+                                <i class="fa-solid fa-check"></i>
+                                Pay Per Usage Response Generation
+                            </p>
+                            <p>
+                                <i class="fa-solid fa-check"></i>
+                                Unlimited API Calls
+                            </p>
+                            <p>
+                                <i class="fa-solid fa-check"></i>
+                                Endless Programming Motivation
+                            </p>
+                        </div>
+                        <div class="detailBlock">
+                            <h4>Billing & Payment</h4>
+                            <div class="billingBlock">
+                                <p>Price</p>
+                                <p>$1.00/call</p>
+                            </div>
+                            <div class="billingBlock">
+                                <p>Billing Period</p>
+                                <p>Monthly</p>
+                            </div>
+                            <div class="billingBlock">
+                                <p>Renewal Date</p>
+                                <p>Mar 10, 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="updateBtn">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        Checkout
+                    </button>
+                </form>
+            </div>
+        </section>
+    </div>
+</body>
+<script>
+    const errMsg = document.querySelector('.errMsg')
+    const authMsg = document.querySelector('.authenticatedMsg')
+    const statusUpdate = document.querySelector('.statusUpdate')
+    const input = document.getElementById('userKey')
+    const cancel_btn = document.getElementById('cancel_btn')
+    const check_status_btn = document.getElementById('check_status_btn')
+
+    async function getCurrStatus() {
+        const user_api_key = input.value
+        if (!user_api_key) {
+            return
+        }
+        try {
+            const res = await fetch('http://localhost:1337/check_status?api_key=' + user_api_key)
+            const { status } = await res.json()
+            console.log('STATUS IS: ', status)
+            if (status === "API Key does not exist") {
+                errMsg.innerText = status
+                errMsg.style.display = 'inline'
+                return
+            }
+            authMsg.style.display = 'inline'
+            if (!status) {
+                //API KEY AUTHENTICATED
+                console.log('STATUS IS NULL')
+                statusUpdate.innerHTML = (
+                    `<div class="info">
+                        <h3>Current Status </h3>
+                        <p>Inactive</p>
+                    </div>`
+                )
+            } else if (status === 'subscription') {
+                statusUpdate.innerHTML = (
+                    `<div class="info">
+                        <h3>Subscription Status </h3>
+                        <p>Active</p>
+                    </div>`
+                )
+                cancel_btn.style.display = 'flex'
+            } else {
+                statusUpdate.innerHTML = (
+                    `<div class="info">
+                        <h3>API Calls </h3>
+                        <p>${status}</p>
+                    </div>`
+                )
+            }
+        } catch (err) {
+            console.log(err.msg)
+        }
+    }
+
+    async function cancelSub() {
+        const user_api_key = input.value
+        if (!user_api_key) {
+            return
+        }
+        try {
+            const res = await fetch('http://localhost:1337/delete?api_key=' + user_api_key)
+            statusUpdate.innerHTML = (
+                `<div class="info">
+                        <h3>Current Status </h3>
+                        <p>Inactive</p>
+                    </div>`
+            )
+        } catch (err) {
+            console.log(err.msg)
+        }
+    }
+
+    cancel_btn.addEventListener('click', cancelSub)
+    check_status_btn.addEventListener('click', getCurrStatus)
+</script>
+
+</html>
